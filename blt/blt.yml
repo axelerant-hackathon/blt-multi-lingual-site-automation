@@ -1,0 +1,9 @@
+project:
+  machine_name: qa-hackathon
+  profile:
+    name: demo_umami
+git:
+  hooks:
+    pre-commit: false
+    pre-push: false
+    commit-msg: false
