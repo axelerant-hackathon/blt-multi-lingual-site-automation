@@ -11,7 +11,7 @@ This project is based on BLT 12.x with Lando local env, an open-source project t
 # Local setup of project
 `1.` Clone your repository. By default, Git names this "origin" on your local.
 ```
-$ git clone git@gitorious.xyz:maithili.pednekar/qa-hackathon.gi
+$ git clone git@gitorious.xyz:maithili.pednekar/qa-hackathon.git
 ```
 `2.` Install Composer dependencies.
 After cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
