@@ -20,7 +20,9 @@
         "drupal/core-composer-scaffold": "^9",
         "drupal/core-recommended": "^9",
         "drupal/mysql56": "^1.0@beta",
-        "mikemadison13/blt-lando": "10.x-dev"
+        "drupal/redis": "^1.5",
+        "mikemadison13/blt-lando": "10.x-dev",
+        "platformsh/config-reader": "^2.4"
     },
     "config": {
         "sort-packages": true
