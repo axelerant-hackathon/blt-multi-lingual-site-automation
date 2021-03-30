@@ -13,6 +13,7 @@ This project is based on BLT 12.x with Lando local env, an open-source project t
 ```
 $ git clone git@gitorious.xyz:saqa/qa-hackathon.git
 ```
+
 `2.` Install Composer dependencies.
 After cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
 `Note: If you are using composer 2 then ignore some error related to hirak/xyz plugin.`
