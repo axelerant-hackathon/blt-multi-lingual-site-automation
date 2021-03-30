@@ -11,13 +11,15 @@ This project is based on BLT 12.x with Lando local env, an open-source project t
 # Local setup of project
 `1.` Clone your repository. By default, Git names this "origin" on your local.
 ```
-$ git clone git@gitorious.xyz:maithili.pednekar/qa-hackathon.gi
+$ git clone git@gitorious.xyz:saqa/qa-hackathon.git
 ```
 `2.` Install Composer dependencies.
 After cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
+`Note: If you are using composer 2 then ignore some error related to hirak/xyz plugin.`
 ```
 $ composer install
 ```
+
 `3.` Setup Lando.
 Setup the container by modifying your .lando.yml  with the configuration from this repositories [configuration files](#important-configuration-files).
 ```
@@ -51,6 +53,16 @@ lando blt tests:behat:run
 
 ---
 # To start developing every time
+
+First add remote to trigger push and pull command
+```
+$ git remote add origin https://github.com/user/repo.git
+# Set a new remote
+
+$ git remote -v
+# Verify new remote
+> origin  https://github.com/user/repo.git (push)
+```
 
 1. Pull from the github repository
 ```
