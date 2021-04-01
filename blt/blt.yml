@@ -2,6 +2,8 @@ project:
   machine_name: qa-hackathon
   profile:
     name: demo_umami
+  human_name: QA Hackathon
+  machine_name: qa_hackathon
 git:
   hooks:
     pre-commit: false
