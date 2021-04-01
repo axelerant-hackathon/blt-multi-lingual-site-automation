@@ -15,7 +15,7 @@ $ git clone git@gitorious.xyz:saqa/qa-hackathon.git
 ```
 
 `2.` Install Composer dependencies.
-After cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
+After cloned the project, go to cloned directory. (Warning: this can take some time based on internet speeds.)
 `Note: If you are using composer 2 then ignore some error related to hirak/xyz plugin.`
 ```
 $ composer install
