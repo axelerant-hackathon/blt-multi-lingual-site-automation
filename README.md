@@ -26,9 +26,12 @@ Setup the container by modifying your .lando.yml  with the configuration from th
 ```
 $ lando start
 ```
+`4` Initializing BLT
+```
+blt recipes:vm:lando
+```
 
-`4.` Setup a local Drupal site with an empty database.
-Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
+`4.` Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
 ```
 $ lando blt setup
 ```
