@@ -22,27 +22,3 @@ Feature: Testing Headers and Footers
         | /es/contact | Inicio | Artículos | Contacto |
         | /en/search/node?keys= | Home | Articles | Contact |
         | /es/es/search/node?keys= | Inicio | Artículos | Contacto |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  # https://stackoverflow.com/questions/651783/how-do-i-select-only-visible-elements-using-xpath
-  # https://unityconstruct.org/uc/node/776
-  # https://stackoverflow.com/questions/15770903/check-if-links-are-broken-in-php
-  #  And every link in the portion "//*[contains(@class,'links')]//a[@href]" should work
-  #  And every link in the portion "//*[contains(@class,'search-iconwrap')]//a[@href]" should work
-  #  And every link in the portion "//*[contains(@class,'block-system-branding-block')]//a[@href]" should work
-  #  And every link in the portion "//*[@id='block-umami-main-menu']//a[@href]" should work
-  #  And every link in the portion "//*[contains(@class,'menu-account__item')]//a[@href]" should work
