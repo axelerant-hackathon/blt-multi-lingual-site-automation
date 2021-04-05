@@ -13,11 +13,17 @@ default:
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: "drupal"
+      region_map:
+        footer: '.footer'
+        header: '.layout-header'
+        header_first: '.region-pre-header'
+        header_second: '.region-header'
+        footer_first: '.region-footer'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
-        filename: report.xml
-        outputDir: "%paths.base%/build/tests"
+      filename: report.xml
+      outputDir: "%paths.base%/build/tests"
     Bex\Behat\ScreenshotExtension:
       screenshot_taking_mode: failed_steps
       image_drivers:
         local:
-          screenshot_directory: /tmp
+          screenshot_directory: ./tmp

@@ -3,7 +3,6 @@ local.settings.php
 local.drush.yml
 local.site.yml
 local.services.yml
-tests/behat/local.yml
 box/local.config.yml
 *.local
 local.blt.yml

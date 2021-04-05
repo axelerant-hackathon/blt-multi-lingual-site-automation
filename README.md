@@ -30,29 +30,36 @@ $ lando start
 ```
 blt recipes:vm:lando
 ```
+```
+Note: After executing above command, content from README file wll get change on your local. Please ignore this and dont commit this file. If you want to do changes in this file then first checkout this file, do changes and then push this file.
+```
 
-`4.` Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
+`5.` Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
 ```
 $ lando blt setup
 ```
 
-`5.` Log into your site with drush.
+`6.` Log into your site with drush.
 Access the site and do necessary work at #LOCAL_DEV_URL by running the following commands.
 ```
 $ cd docroot
 $ lando drush uli
 ```
 
-`6.` Trigger “blt” command, it will give you whole list of blt commands
+`7.` Trigger “blt” command, it will give you whole list of blt commands
 
-`7.` To copy Example Behat tests in your application
+`8.` To copy Example Behat tests in your application. Go to root directory(qa-hackathon) and then trigger below command
 ```
 lando blt recipes:behat:init
 ```
 
-`8.` To run example behat test, trigger below command
+`9.` To run example behat test, trigger below command from root directory (qa-hackathon)
 ```
 lando blt tests:behat:run
+```
+```
+Note: while excuting this command, It will give the following step where we need to proceed with "y" .
+BLT can (re)generate tests/behat/local.yml using tests/behat/example.local.yml. Do you want (re)generate local Behat config in tests/behat/local.yml? (y/n)
 ```
 
 ---
