@@ -34,7 +34,7 @@ Feature: Contact form
         And I fill in the "message" field with "<message>"
         And I click the "#contact-message-feedback-form #edit-submit" button
         Then I should see the text "<expectedSuccessText>"
-        Then I click the ".menu-account__item:nth-child(2) > .menu-account__link" link
+        And I click the ".menu-account__item:nth-child(2) > .menu-account__link" link
         Examples:
             | URL  | subject  | message  | expectedSuccessText  |
             | /en/contact  | QA Hackathon | Learning Behat | Your message has been sent. |
