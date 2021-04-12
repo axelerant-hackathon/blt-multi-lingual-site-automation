@@ -25,6 +25,8 @@ local:
   extensions:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
+      base_url: http://qa-hackathon.lndo.site
+    Drupal\MinkExtension:
       browser_name: chrome
       javascript_session: default
       # configure the base url for your site
@@ -49,6 +51,10 @@ local:
           chrome:
             api_url: "http://localhost:9222"
     Drupal\DrupalExtension:
+      selectors:
+        message_selector: '.messages'
+        error_message_selector: '.messages.messages-error'
+        success_message_selector: '.messages.messages--status'
       drupal:
         # This must be an absolute path.
         drupal_root: /app/docroot

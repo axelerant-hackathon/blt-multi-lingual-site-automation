@@ -23,6 +23,24 @@ class FeatureContext extends RawDrupalContext
   {
   }
 
+
+  /** @When /^I get the count of recipes "([^"]*)"$/ */
+  public function iGetCountOfRecipes($css_selector)
+  {
+    static $count = 0;
+    $nodes = $this->getSession()->getPage()->findAll("css", $css_selector);
+    $count = count($nodes);
+    return $count;
+  }
+
+  /**
+   * @Then /^I should see expected count of recipes"([^"]*)"$/
+   */
+  public function iShouldSeeExpReceipesCount($css_selector)
+  {
+    $this->iGetCountOfRecipes($css_selector);
+  }
+
   /**
    * @When I fill in the :arg1 field with :arg2
    */
@@ -139,6 +157,18 @@ class FeatureContext extends RawDrupalContext
     print "Done! Checked $count Links";
   }
 
+  /**
+   * Waits a while, for debugging.
+   *
+   * @param int $seconds
+   *   How long to wait.
+   *
+   * @When I wait :seconds second(s)
+   */
+  public function wait($seconds)
+  {
+    sleep($seconds);
+  }
 
   /**
    * Wait for the page load.
@@ -163,6 +193,14 @@ class FeatureContext extends RawDrupalContext
         $selector = 'mail';
         break;
 
+      case 'passwordNew':
+        $selector = 'pass[pass1]';
+        break;
+
+      case 'confirmPassword':
+        $selector = 'pass[pass2]';
+        break;
+
       case 'subject':
         $selector = 'subject[0][value]';
         break;
@@ -177,6 +215,22 @@ class FeatureContext extends RawDrupalContext
 
       case "body":
         $selector = 'body[0][value]';
+        break;
+
+      case "preparationTime":
+        $selector = 'edit-field-preparation-time-0-value';
+        break;
+
+      case "numberOfServings":
+        $selector = 'edit-field-number-of-servings-0-value';
+        break;
+
+      case "summary":
+        $selector = 'field_summary[0][value]';
+        break;
+
+      case "recipeInstruction":
+        $selector = 'field_recipe_instruction[0][value]';
         break;
     }
     return $selector;
@@ -275,5 +329,24 @@ JS;
     } catch (\Exception $e) {
       throw new \Exception("Scroll Into View Failed. Check Your Script");
     }
+  }
+
+  /**
+   * Fill in wysiwyg on field.
+   *
+   * @Then I fill in wysiwyg on field :locator with :value
+   */
+  public function iFillInWysiwygOnFieldWith($locator, $value)
+  {
+    $el = $this->getSession()->getPage()->findField($locator);
+    if (empty($el)) {
+      throw new ExpectationException('Could not find WYSIWYG with locator: ' . $locator, $this->getSession());
+    }
+    $fieldId = $el->getAttribute('id');
+    if (empty($fieldId)) {
+      throw new \Exception('Could not find an id for field with locator: ' . $locator);
+    }
+    $this->getSession()
+      ->executeScript("CKEDITOR.instances[\"$fieldId\"].setData(\"$value\");");
   }
 }
