@@ -17,9 +17,9 @@ default:
       blackbox: ~
       selectors:
         message_selector: '.messages'
-        error_message_selector: '.messages.messages-error'
+        error_message_selector: '.messages.messages--error'
         success_message_selector: '.messages.messages--status'
-      api_driver: "drupal"
+      api_driver: "drush"
       region_map:
         footer: '.footer'
         header: '.layout-header'

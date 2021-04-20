@@ -3,9 +3,13 @@
 namespace Drupal;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\Context\DrushContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Exception\DriverException;
+use Behat\Behat\Context\Context;
+
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -23,6 +27,39 @@ class FeatureContext extends RawDrupalContext
   {
   }
 
+//  private $minkContext;
+//  private $drushContext;
+//  private $drupalContext;
+//
+//  /** @BeforeScenario */
+//  public function gatherContexts(BeforeScenarioScope $scope)
+//  {
+//      $environment = $scope->getEnvironment();
+//
+//      $this->minkContext = $environment->getContext('Drupal\DrupalExtension\Context\MinkContext');
+//      $this->drushContext = $environment->getContext('Drupal\DrupalExtension\Context\DrushContext');
+//      $this->drupalContext = $environment->getContext('Drupal\DrupalExtension\Context\DrupalContext');
+//  }
+
+/**
+ * @Given I am logged in as user :name
+ */
+  public function iAmLoggedInAsUser($name) {
+    $domain = $this->getMinkParameter('base_url');
+
+    // Pass base url to drush command.
+    $uli = $this->getDriver('drush')->drush('uli', [
+      "--name '" . $name . "'",
+      "--browser=0",
+      "--uri=$domain",
+    ]);
+
+    // Trim EOL characters.
+    $uli = trim($uli);
+
+    // Log in.
+    $this->getSession()->visit($uli);
+  }
 
   /** @When /^I get the count of recipes "([^"]*)"$/ */
   public function iGetCountOfRecipes($css_selector)
@@ -51,6 +88,59 @@ class FeatureContext extends RawDrupalContext
     $value = $this->fixStepArgument($value);
     $this->getSession()->getPage()->fillField($field, $value);
   }
+
+  /**
+   * Return a region from the current page.
+   *
+   * @throws \Exception
+   *   If region cannot be found.
+   *
+   * @param string $region
+   *   The machine name of the region to return.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   */
+  public function getRegion($region)
+  {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if (!$regionObj) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+    return $regionObj;
+  }
+
+  /**
+   * Find elements in a specific region.
+   *
+   * @Then I should see the expected elements in the :region( region)
+   * @throws \Exception
+   *   If region or elements within it cannot be found.
+   */
+  public function assertRegionElements($region)
+  {
+
+    if($region==='header'){
+      $regionObj = $this->getRegion($region);
+      foreach (['.links li:nth-child(1)', '.links li:nth-child(2)', '.site-logo >img', '#edit-submit--2', '.menu-account__link','.menu-main li:nth-child(1)','.menu-main li:nth-child(2)','.menu-main li:nth-child(3)'] as $webElement) {
+        $element = $regionObj->find('css', $webElement);
+        if (empty($element)) {
+          throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
+        }
+      }
+    } else if($region==='footer'){
+      $regionObj = $this->getRegion($region);
+      foreach (['img.image-style-medium-8-7', '.block__title .field', '.footer-promo-content .field:nth-child(1)', '.footer-promo-content .field:nth-child(2)', '#block-umami-footer .block__title', '#block-umami-footer .menu-footer__link'] as $webElement) {
+        $element = $regionObj->find('css', $webElement);
+        if (empty($element)) {
+          throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
+        }
+      }
+    } else{
+      throw new \Exception('Incorrect Region');
+    }
+  }
+
 
   /**
    * @Then /^Check for broken images on the page/
@@ -87,12 +177,21 @@ class FeatureContext extends RawDrupalContext
    */
   public $visited_links = array();
   /**
-   * @Then every link in the block :arg1 should work
+   * @Then every link in the block :arg1 should pass
    */
   public function everyLinkInTheBlockShouldWork($arg1)
   {
     $elements = $this->getSession()->getPage()->findAll('xpath', $arg1);
     $count = count($elements);
+
+    print "\n Total Links Count: $count \n";
+
+    $i=0;
+    foreach ($elements as $element) {
+      $i++;
+      $href = $element->getAttribute('href');
+      print "\n Link #$i ". $href . "\n";
+    }
 
     foreach ($elements as $element) {
       // If element or tag is empty...
@@ -134,7 +233,7 @@ class FeatureContext extends RawDrupalContext
         continue;
       }
 
-      print "Checking Link: " . $href . "\n";
+      print "\n Checking Link: " . $href . "\n";
 
       // Mimics Drupal\DrupalExtension\Context\MinkContext::assertAtPath
       $this->getSession()->visit($this->locatePath($href));
@@ -178,6 +277,26 @@ class FeatureContext extends RawDrupalContext
   {
     $this->getSession()->wait(15000, "document.readyState === 'complete'");
   }
+
+  // /**
+  //  * @Given I am logged in as user :name
+  //  */
+  // public function iAmLoggedInAsUser($name) {
+  //   $domain = $this->getMinkParameter('base_url');
+
+  //   // Pass base url to drush command.
+  //   $uli = $this->getDriver('drush')->drush('uli', [
+  //     "--name '" . $name . "'",
+  //     "--browser=0",
+  //     "--uri=$domain",
+  //   ]);
+
+  //   // Trim EOL characters.
+  //   $uli = trim($uli);
+
+  //   // Log in.
+  //   $this->getSession()->visit($uli);
+  // }
 
   /**
    * Returns selector for specified field/
