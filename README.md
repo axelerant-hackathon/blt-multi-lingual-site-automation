@@ -1,128 +1,77 @@
-# prerequisite
-1. Setup lando locally.
-    We are using lando based setup for the local environment. Install the lando from [here](https://github.com/lando/lando)
+# Implementing Automated Tests in Acquia BLT - Umami Profile Site
 
-# Getting Started
-This project is based on BLT 12.x with Lando local env, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
+![Behat Execution Resutls](demo_evidence/behat_test_results.png)
 
-1. Review the [Required / Recommended Skills](https://docs.acquia.com/blt/developer/skills/) for working with a BLT project.
-2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](https://docs.acquia.com/blt/install/).
+# About Project
+   * This project is based on BLT 12.x with Lando local env, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices.
+   * Please refer and follow this [READ ME](/SetUp_README.md) for local setup and workflow.
+   * About [Umami Installation Profile](https://www.drupal.org/project/demo_umami)
 
-# Local setup of project
-`1.` Clone your repository. By default, Git names this "origin" on your local.
-```
-$ git clone git@gitorious.xyz:saqa/qa-hackathon.git
-```
+# About Automated Tests
 
-`2.` Install Composer dependencies.
-After cloned the project, go to cloned directory. (Warning: this can take some time based on internet speeds.)
-`Note: If you are using composer 2 then ignore some error related to hirak/xyz plugin.`
-```
-$ composer install
-```
+* Testing Frameworks:
+   * [behat](https://docs.behat.org/en/latest/) - For both front-end & back-end functional tests
+   * [cypress.io](https://www.cypress.io/)  - For front-end visual tests & functional tests with enabling [JSON:API module](https://www.drupal.org/project/jsonapi)
 
-`3.` Setup Lando.
-Setup the container by modifying your .lando.yml  with the configuration from this repositories [configuration files](#important-configuration-files).
-```
-$ lando start
-```
-`4` Initializing BLT
-```
-blt recipes:vm:lando
-```
-```
-Note: After executing above command, content from README file wll get change on your local. Please ignore this and dont commit this file. If you want to do changes in this file then first checkout this file, do changes and then push this file.
-```
+* Base url of the site: https://qa-hackathon.lndo.site/
 
-`5.` Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
-```
-$ lando blt setup
-```
+* Testing features belongs to behat are tagged with the following primary tags:
+    * @contact_us_form => Covers contact us form submission with positive and negative cases
+    * @create-article => Covers create and verify the article through UI
+    * @header_footer => Covers header and footer elements in several pages
+    * @basic_search => Covers basic search scenarios in detail
 
-`6.` Log into your site with drush.
-Access the site and do necessary work at #LOCAL_DEV_URL by running the following commands.
-```
-$ cd docroot
-$ lando drush uli
-```
+* Validate the features in both "English" & "Spanish" Sites
 
-`7.` Trigger “blt” command, it will give you whole list of blt commands
+* Testing features belongs to cypress are tagged with the following primary tags:
+    * @contact_us_form => Covers contact us form submission with positive and negative cases
+    * @create-article => Covers create and verify the article through UI
+    * @header_footer => Covers header and footer elements in several pages
+    * @basic_search => Covers basic search scenarios in detail
 
-`8.` To copy Example Behat tests in your application. Go to root directory(qa-hackathon) and then trigger below command
-```
-lando blt recipes:behat:init
-```
+## Commands for behat - test execution
 
-`9.` To run example behat test, trigger below command from root directory (qa-hackathon)
-```
-lando blt tests:behat:run
-```
-```
-Note: while excuting this command, It will give the following step where we need to proceed with "y" .
-BLT can (re)generate tests/behat/local.yml using tests/behat/example.local.yml. Do you want (re)generate local Behat config in tests/behat/local.yml? (y/n)
-```
+* Test execution using tags:
 
----
-# To start developing every time
-
-First add remote to trigger push and pull command
 ```
-$ git remote add origin https://github.com/user/repo.git
-# Set a new remote
+  $ lando blt tests:behat:run -D behat.tags=@contact_us_form
+  $ lando blt tests:behat:run -D behat.tags=@create-article
+  $ lando blt tests:behat:run -D behat.tags=@header_footer
+  $ lando blt tests:behat:run -D behat.tags=@basic_search
+```
+* Test execution using feature file name:
 
-$ git remote -v
-# Verify new remote
-> origin  https://github.com/user/repo.git (push)
+```
+  $ lando blt tests:behat:run -D behat.paths=Article.feature
+  $ lando blt tests:behat:run -D behat.paths=Contact.feature
+  $ lando blt tests:behat:run -D behat.paths=HeaderAndFooter.feature
+  $ lando blt tests:behat:run -D behat.paths=Search.feature
+```
+  * Note: Please refer this [BLT-Automated Testing documentation](https://docs.acquia.com/blt/developer/testing/) for various useful commands and test directory structure in detail.
+
+## Configure the front-end dependencies, tests in BLT
+
+  *  Please refer this [BLT-front-end documentation](https://docs.acquia.com/blt/developer/frontend/) for front-end related configuration in blt.yml.
+
+* Testing belongs to cypress covers the following tests
+    * article_validation_via_json_api.spec.js => Validation of articles via JSON:API'
+    * vr_home_page.spec.js => Visual Validation of Home Page using [Applitools](https://applitools.com/)
+      * Note: set the value of an environment variable APPLITOOLS_API_KEY based on our OS as mentioned [here](https://www.npmjs.com/package/@applitools/eyes-cypress) or update that variable's value in this file: /docroot/themes/custom/axe/.as-a.ini
+
+![Cypress Tests Evidence](demo_evidence/article_validation_via_json_api.spec.js.gif)
+
+## Commands for front-end tests
+
+* The following command executes 'source:build:frontend-reqs' target hook from blt.yml which takes care of installing cypress related dependencies in our case
+```
+  $ blt source:build:frontend-reqs
+``` 
+* The following command executes 'source:build:frontend-test' target hook from blt.yml and takes care of executing the tests
+```
+  $ blt tests:frontend
 ```
 
-1. Pull from the github repository
-```
-git pull origin develop
-```
 
-2. Create a new feature branch from develop
-```
-git checkout -b JIRA-000-feature-branch
-```
 
-### To Create a Pull Request.
 
-`1.` After you make changes inside your local drupal site. Export your configuration from the database to your configuration.
- Export your drupal config changes if you have them.
- ```
-$ lando drush cex
-```
 
-`2.` commit your changes and push your changes to your origin repository.
-```
-$ git status
-$ git add <file_name(s)>
-$ git commit -m "qa-hackathon-000: Committing new changes to site."
-$ git push origin <branch_name>
-```
-
-`3.` Navigate to Github and open a pull request against the upstream. Assign a person on your team to review.
-
-# Resources
-
-Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
-```
-$ blt
-```
-
-Note the following properties of this project:
-* Primary development branch: Develop
-* Local site URL: http://qa-hackathon.lndo.site
-
-## Working With a BLT Project
-BLT projects are designed to instill software development best practices (including git workflows). \
-Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/).
-
-### Important Configuration Files
-BLT uses a number of configuration (`.yml` or `.json`) files to define and customize behaviors. Some examples of these are:
-
-* `blt/blt.yml` (formerly blt/project.yml prior to BLT 9.x)
-* `blt/local.blt.yml` (local only specific blt configuration)
-* `landio.yml` (Lando configuration)
-* `drush/sites` (contains Drush aliases for this project)
-* `composer.json` (includes required components, including Drupal Modules, for this project)

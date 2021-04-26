@@ -21,9 +21,12 @@ local:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\ConfigContext
+        - Drupal\DrupalExtension\Context\MarkupContext
   extensions:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
+      base_url: http://qa-hackathon.lndo.site
+    Drupal\MinkExtension:
       browser_name: chrome
       javascript_session: default
       # configure the base url for your site
@@ -50,7 +53,7 @@ local:
     Drupal\DrupalExtension:
       drupal:
         # This must be an absolute path.
-        drupal_root: /app/docroot
+        drupal_root:  /app/docroot
       drush:
         alias: '@self'
 
@@ -104,25 +107,10 @@ dev:
           chrome:
             api_url: "http://localhost:9222"
     Drupal\DrupalExtension:
-      selectors:
-        message_selector: '.messages'
-        error_message_selector: '.messages.messages-error'
-        success_message_selector: '.messages.messages--status'
       drupal:
         # This must be an absolute path.
         drupal_root:  /app/docroot
-      api_driver: "drush"
-      blackbox: ~
       drush:
-        alias: 'lando.self'
+        alias: 'dev'
       # https://www.chapterthree.com/blog/local-behat-testing-lando-and-pantheon
       # https://www.drupal.org/project/drupalextension/issues/1846828
-      # 
-      # drush:
-      #   uri: master-7rqtwti-ufjrei4hsq3my.us-4.platformsh.site
-      region_map:
-        footer: '.footer'
-        header: '.layout-header'
-        header_first: '.region-pre-header'
-        header_second: '.region-header'
-        footer_first: '.region-footer'

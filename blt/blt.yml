@@ -8,3 +8,10 @@ git:
     pre-commit: false
     pre-push: false
     commit-msg: false
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}/themes/custom/axe
+    command: 'npm install'
+  frontend-test:
+    dir: ${docroot}/themes/custom/axe
+    command: 'npm test'

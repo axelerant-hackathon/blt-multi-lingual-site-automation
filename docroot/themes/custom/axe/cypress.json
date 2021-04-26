@@ -1,0 +1,13 @@
+{
+    "baseUrl": "http://qa-hackathon.lndo.site",
+    "eyesTimeout": 180000,
+    "video": false,
+    "env": {
+        "cyAdminUser": "admin",
+        "cyAdminPassword": "admin",
+        "cyAdminRole": "administrator",
+        "cyEditorUser": "editor",
+        "cyEditorPassword": "editor",
+        "cyEditorRole": "editor"
+      }
+}

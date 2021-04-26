@@ -9,8 +9,6 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Exception\DriverException;
 use Behat\Behat\Context\Context;
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-
 /**
  * FeatureContext class defines custom step definitions for Behat.
  */
@@ -25,57 +23,6 @@ class FeatureContext extends RawDrupalContext
    */
   public function __construct()
   {
-  }
-
-//  private $minkContext;
-//  private $drushContext;
-//  private $drupalContext;
-//
-//  /** @BeforeScenario */
-//  public function gatherContexts(BeforeScenarioScope $scope)
-//  {
-//      $environment = $scope->getEnvironment();
-//
-//      $this->minkContext = $environment->getContext('Drupal\DrupalExtension\Context\MinkContext');
-//      $this->drushContext = $environment->getContext('Drupal\DrupalExtension\Context\DrushContext');
-//      $this->drupalContext = $environment->getContext('Drupal\DrupalExtension\Context\DrupalContext');
-//  }
-
-/**
- * @Given I am logged in as user :name
- */
-  public function iAmLoggedInAsUser($name) {
-    $domain = $this->getMinkParameter('base_url');
-
-    // Pass base url to drush command.
-    $uli = $this->getDriver('drush')->drush('uli', [
-      "--name '" . $name . "'",
-      "--browser=0",
-      "--uri=$domain",
-    ]);
-
-    // Trim EOL characters.
-    $uli = trim($uli);
-
-    // Log in.
-    $this->getSession()->visit($uli);
-  }
-
-  /** @When /^I get the count of recipes "([^"]*)"$/ */
-  public function iGetCountOfRecipes($css_selector)
-  {
-    static $count = 0;
-    $nodes = $this->getSession()->getPage()->findAll("css", $css_selector);
-    $count = count($nodes);
-    return $count;
-  }
-
-  /**
-   * @Then /^I should see expected count of recipes"([^"]*)"$/
-   */
-  public function iShouldSeeExpReceipesCount($css_selector)
-  {
-    $this->iGetCountOfRecipes($css_selector);
   }
 
   /**
@@ -122,7 +69,7 @@ class FeatureContext extends RawDrupalContext
 
     if($region==='header'){
       $regionObj = $this->getRegion($region);
-      foreach (['.links li:nth-child(1)', '.links li:nth-child(2)', '.site-logo >img', '#edit-submit--2', '.menu-account__link','.menu-main li:nth-child(1)','.menu-main li:nth-child(2)','.menu-main li:nth-child(3)'] as $webElement) {
+      foreach (['.links li:nth-child(1)', '.links li:nth-child(2)', '.menu-account__link','.menu-main li:nth-child(1)','.menu-main li:nth-child(2)','.menu-main li:nth-child(3)'] as $webElement) {
         $element = $regionObj->find('css', $webElement);
         if (empty($element)) {
           throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
@@ -130,7 +77,7 @@ class FeatureContext extends RawDrupalContext
       }
     } else if($region==='footer'){
       $regionObj = $this->getRegion($region);
-      foreach (['img.image-style-medium-8-7', '.block__title .field', '.footer-promo-content .field:nth-child(1)', '.footer-promo-content .field:nth-child(2)', '#block-umami-footer .block__title', '#block-umami-footer .menu-footer__link'] as $webElement) {
+      foreach (['.block__title .field', '.footer-promo-content .field:nth-child(1)', '.footer-promo-content .field:nth-child(2)', '#block-umami-footer .block__title', '#block-umami-footer .menu-footer__link'] as $webElement) {
         $element = $regionObj->find('css', $webElement);
         if (empty($element)) {
           throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
@@ -277,26 +224,6 @@ class FeatureContext extends RawDrupalContext
   {
     $this->getSession()->wait(15000, "document.readyState === 'complete'");
   }
-
-  // /**
-  //  * @Given I am logged in as user :name
-  //  */
-  // public function iAmLoggedInAsUser($name) {
-  //   $domain = $this->getMinkParameter('base_url');
-
-  //   // Pass base url to drush command.
-  //   $uli = $this->getDriver('drush')->drush('uli', [
-  //     "--name '" . $name . "'",
-  //     "--browser=0",
-  //     "--uri=$domain",
-  //   ]);
-
-  //   // Trim EOL characters.
-  //   $uli = trim($uli);
-
-  //   // Log in.
-  //   $this->getSession()->visit($uli);
-  // }
 
   /**
    * Returns selector for specified field/

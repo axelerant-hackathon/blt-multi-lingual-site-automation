@@ -8,7 +8,7 @@ Feature: Basic Search
 Scenario Outline: Searching for a page with full title that exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<fullTitle>"
-   And I click the "#edit-submit--2" button
+   And I click the "#edit-submit" button
    Then I should see "<fullTitle>"
    Examples:
       | URL | fullTitle |
@@ -19,7 +19,7 @@ Scenario Outline: Searching for a page with full title that exists
 Scenario Outline: Searching for a page with partial title that exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<partialTitle>"
-   And I click the "#edit-submit--2" button
+   And I click the "#edit-submit" button
    Then I should see "<fullTitle>"
    Examples:
       | URL  | fullTitle | partialTitle |
@@ -30,7 +30,7 @@ Scenario Outline: Searching for a page with partial title that exists
 Scenario Outline: Searching for a page that does NOT exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<incorrectText>"
-   And I click the "#edit-submit--2" button
+   And I click the "#edit-submit" button
    Then I should see "<expectedWarningMessage>"
    Examples:
       | URL | incorrectText  | expectedWarningMessage  |
@@ -40,7 +40,7 @@ Scenario Outline: Searching for a page that does NOT exists
 @negative @empty_search
 Scenario Outline: Empty Search
    Given I am on "<URL>"
-   And I click the "#edit-submit--2" button
+   And I click the "#edit-submit" button
    Then I should see "<expectedWarningMessage>"
    Examples:
       | URL | expectedWarningMessage  |

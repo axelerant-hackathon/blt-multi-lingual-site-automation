@@ -1,1 +1,6 @@
 /README.txt
+/custom/README.md
+/custom/axe/node_modules
+/custom/axe/cypress/screenshots
+/custom/axe/cypress/videos
+/custom/axe/file.log

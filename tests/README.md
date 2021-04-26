@@ -1,1 +1,1 @@
-This directory should contain automated tests, organized into subdirectories according to testing tool.
+This directory have behat automated tests

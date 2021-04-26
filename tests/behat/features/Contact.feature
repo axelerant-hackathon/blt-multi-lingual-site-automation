@@ -8,7 +8,7 @@ Feature: Contact Us Form
     Rule:
         - All the Fields: "Name" , "Email Address", "Subject", "Message" are mandatory
 
-@smoke @api @dev
+@smoke @api @anonymous_user_success
 Scenario Outline: As an anonymous User, Submit the Contact Form with all the mandatory field values
     Given I am an anonymous user
     And I am on "<URL>"
@@ -26,7 +26,7 @@ Scenario Outline: As an anonymous User, Submit the Contact Form with all the man
         | /contact/feedback  | Quality | QA Hackathon | Learning Behat | Your message has been sent. |
         | /es/contact/feedback | Calidad | Hackathon de control de calidad |Aprendiendo Behat | Su mensaje ha sido enviado. |
 
-@negative
+@negative @anonymous_user_error
 Scenario Outline: As an anonymous User, Submit the Contact Form without mandatory field values
     Given I am an anonymous user
     And I am on "<URL>"
@@ -38,7 +38,7 @@ Scenario Outline: As an anonymous User, Submit the Contact Form without mandator
         | http://qa-hackathon.lndo.site/contact/feedback  |
         | http://qa-hackathon.lndo.site/es/contact/feedback |
 
-@smoke @api
+@smoke @api @authenticated_user_success
 Scenario Outline: As an Authenticated User, Submit the Contact Form with all the mandatory field values
     Given I am logged in as a user with the "Authenticated user" role
     When I am on "<URL>"
@@ -53,7 +53,7 @@ Scenario Outline: As an Authenticated User, Submit the Contact Form with all the
         | /en/contact  | QA Hackathon | Learning Behat | Your message has been sent. |
         | /es/contact | Hackathon de control de calidad | Aprendiendo Behat | Su mensaje ha sido enviado. |
 
-@api @negative
+@api @@authenticated_user_error @negative
 Scenario Outline: As an Authenticated User, Submit the Contact Form without mandatory field values
     Given I am logged in as a user with the "Authenticated user" role
     And I am on "<URL>"
