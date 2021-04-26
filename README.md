@@ -16,6 +16,7 @@
 
 * Base url of the site: https://qa-hackathon.lndo.site/
 
+
 * Testing features belongs to behat are tagged with the following primary tags:
     * @contact_us_form => Covers contact us form submission with positive and negative cases
     * @create-article => Covers create and verify the article through UI
@@ -24,6 +25,7 @@
 
 
 * Validate the features in both "English" & "Spanish" Sites
+
 
 * Testing features belongs to cypress are tagged with the following primary tags:
     * @contact_us_form => Covers contact us form submission with positive and negative cases
