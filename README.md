@@ -13,6 +13,7 @@
    * [behat](https://docs.behat.org/en/latest/) - For both front-end & back-end functional tests
    * [cypress.io](https://www.cypress.io/)  - For front-end visual tests & functional tests with enabling [JSON:API module](https://www.drupal.org/project/jsonapi)
 
+
 * Base url of the site: https://qa-hackathon.lndo.site/
 
 * Testing features belongs to behat are tagged with the following primary tags:
@@ -20,6 +21,7 @@
     * @create-article => Covers create and verify the article through UI
     * @header_footer => Covers header and footer elements in several pages
     * @basic_search => Covers basic search scenarios in detail
+
 
 * Validate the features in both "English" & "Spanish" Sites
 
