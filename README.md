@@ -1,4 +1,4 @@
-# Implementing Automated Tests in Acquia BLT - Umami Profile Site
+# Implementing Automated Tests in Acquia BLT - Umami Profile(Bilingual Site)
 
 ![Behat Execution Resutls](demo_evidence/behat_test_results.png)
 
@@ -10,8 +10,9 @@
 # About Automated Tests
 
 * Testing Frameworks:
-   * [behat](https://docs.behat.org/en/latest/) - For both front-end & back-end functional tests
-   * [cypress.io](https://www.cypress.io/)  - For front-end visual tests & functional tests with enabling [JSON:API module](https://www.drupal.org/project/jsonapi)
+  * [behat](https://docs.behat.org/en/latest/) - For both front-end & back-end functional tests
+  * [cypress.io](https://www.cypress.io/)  - For front-end visual tests & functional tests with enabling [JSON:API module](https://www.drupal.org/project/jsonapi)
+
 
 
 * Base url of the site: https://qa-hackathon.lndo.site/
@@ -22,6 +23,7 @@
     * @create-article => Covers create and verify the article through UI
     * @header_footer => Covers header and footer elements in several pages
     * @basic_search => Covers basic search scenarios in detail
+
 
 
 * Validate the features in both "English" & "Spanish" Sites
@@ -69,7 +71,7 @@
 * The following command executes 'source:build:frontend-reqs' target hook from blt.yml which takes care of installing cypress related dependencies in our case
 ```
   $ blt source:build:frontend-reqs
-``` 
+```
 * The following command executes 'source:build:frontend-test' target hook from blt.yml and takes care of executing the tests
 ```
   $ blt tests:frontend
