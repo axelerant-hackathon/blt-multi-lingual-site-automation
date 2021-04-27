@@ -6,10 +6,7 @@ Feature: Article administration
 
 @smoke @api
 Scenario Outline: An administrator can able to publish an article
-    Given users:
-    | name     | mail            | status |
-    | Joe User | joe@example.com | 1      |
-    And I am logged in as a user with the "administrator" role
+    Given I am logged in as a user with the "administrator" role
     And I go to "<URL>"
     And I should see the heading "<Heading>"
     And I fill in the "title" field with "<title>"

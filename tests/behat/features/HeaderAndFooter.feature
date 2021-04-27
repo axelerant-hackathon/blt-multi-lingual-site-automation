@@ -15,7 +15,7 @@ Scenario Outline: Verify the visibility of header and footer elements in Homepag
     | /en/contact |
     | /es/contact |
     | /en/search/node?keys= |
-    | /es/es/search/node?keys= |
+    | /es/search/node?keys= |
 
 @smoke @header_footer_broken_links
 Scenario Outline: Verify Broken Links

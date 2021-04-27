@@ -9,22 +9,24 @@ Scenario Outline: Searching for a page with full title that exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<fullTitle>"
    And I click the "#edit-submit" button
-   Then I should see "<fullTitle>"
+   Then I should see the heading "<fullTitle>"
+
    Examples:
       | URL | fullTitle |
       | /en | Fiery chili sauce |
       | /es | Salsa de chile ardiente |
 
-@smoke @partial_title_search
-Scenario Outline: Searching for a page with partial title that exists
+@smoke @partial_title_search @javascript
+Scenario Outline: Searching for a page with partial title that exists on multiple pages
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<partialTitle>"
    And I click the "#edit-submit" button
+   Then I should see "<partialTitle>" in the ".search-result__snippet" element in the "search_content" region
    Then I should see "<fullTitle>"
    Examples:
       | URL  | fullTitle | partialTitle |
-      | /en | Fiery chili sauce | Fiery |
-      | /es | Salsa de chile ardiente | Ardiente |
+      | /en | Dairy-free and delicious milk chocolate | chocolate |
+      | /es | Dale a tu avena el cambio de imagen definitivo | chocolate |
 
 @negative @incorrect_search
 Scenario Outline: Searching for a page that does NOT exists

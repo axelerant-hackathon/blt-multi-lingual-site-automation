@@ -3,11 +3,9 @@
 namespace Drupal;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Drupal\DrupalExtension\Context\DrushContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Exception\DriverException;
-use Behat\Behat\Context\Context;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -66,56 +64,25 @@ class FeatureContext extends RawDrupalContext
    */
   public function assertRegionElements($region)
   {
-
-    if($region==='header'){
+    if ($region === 'header') {
       $regionObj = $this->getRegion($region);
-      foreach (['.links li:nth-child(1)', '.links li:nth-child(2)', '.menu-account__link','.menu-main li:nth-child(1)','.menu-main li:nth-child(2)','.menu-main li:nth-child(3)'] as $webElement) {
+      foreach (['.links li:nth-child(1)', '.links li:nth-child(2)', '.menu-account__link', '.menu-main li:nth-child(1)', '.menu-main li:nth-child(2)', '.menu-main li:nth-child(3)'] as $webElement) {
         $element = $regionObj->find('css', $webElement);
         if (empty($element)) {
-          throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
+          throw new \Exception(sprintf('No element with the identity of "%s" in the "%s" region on the page %s', $webElement, $region, $this->getSession()->getCurrentUrl()));
         }
       }
-    } else if($region==='footer'){
+    } else if ($region === 'footer') {
       $regionObj = $this->getRegion($region);
       foreach (['.block__title .field', '.footer-promo-content .field:nth-child(1)', '.footer-promo-content .field:nth-child(2)', '#block-umami-footer .block__title', '#block-umami-footer .menu-footer__link'] as $webElement) {
         $element = $regionObj->find('css', $webElement);
         if (empty($element)) {
-          throw new \Exception(sprintf('No element with the identity of "%s" having text "%s" in the "%s" region on the page %s', $webElement, $element->getText(), $region, $this->getSession()->getCurrentUrl()));
+          throw new \Exception(sprintf('No element with the identity of "%s" in the "%s" region on the page %s', $webElement, $region, $this->getSession()->getCurrentUrl()));
         }
       }
-    } else{
+    } else {
       throw new \Exception('Incorrect Region');
     }
-  }
-
-
-  /**
-   * @Then /^Check for broken images on the page/
-   */
-  public function verifyBrokenImages()
-  {
-    $imageElements = $this->getSession()->getPage()->findAll('css', 'img');
-    $count = count($imageElements);
-    foreach ($imageElements as $image) {
-      $imgUrl = $image->getAttribute('src');
-      $this->visitPath($imgUrl);
-      //Reference: https://stackoverflow.com/questions/34224621/check-http-status-in-cycle-behat-mink-goutte-driver
-      try {
-        $statusCode = $this->getSession()->getStatusCode();
-        if ($statusCode < 400) {
-          print "Pass";
-        }
-      } catch (UnsupportedDriverActionException $e) {
-        // Simply continue on, as this driver doesn't support HTTP response codes.
-      } catch (ExpectationException $e) {
-        print "200 Success NOT received \n";
-        throw new \Exception("Image at URL $imgUrl did not return 200 code.");
-      } catch (DriverException $e) {
-        throw new \Exception($e->getMessage());
-      }
-      print "\n";
-    }
-    print "Done! Checked $count Images";
   }
 
   /**
@@ -133,62 +100,59 @@ class FeatureContext extends RawDrupalContext
 
     print "\n Total Links Count: $count \n";
 
-    $i=0;
+    $i = 0;
+    $linkArray=array();
     foreach ($elements as $element) {
       $i++;
-      $href = $element->getAttribute('href');
-      print "\n Link #$i ". $href . "\n";
-    }
-
-    foreach ($elements as $element) {
-      // If element or tag is empty...
       if (empty($element->getParent())) {
         continue;
       }
-
       $href = $element->getAttribute('href');
+      print "\n Link #$i ". $href . "\n";
+      array_push($linkArray,$href);
+    }
 
+    for($i=0; $i<count($linkArray); $i++){
       // Skip if empty
-      if (empty($href)) {
+      if (empty($linkArray[$i])) {
         continue;
       }
 
       // Skip if already visited
-      if (isset($this->visited_links[$href])) {
-        print "Skipping visited link: $href \n\n";
+      if (isset($this->visited_links[$linkArray[$i]])) {
+        print "Skipping visited link: $linkArray[$i] \n\n";
         continue;
       }
 
       // Save URL for later to avoid duplicates.
-      $this->visited_links[$href] = $href;
+      $this->visited_links[$linkArray[$i]] = $linkArray[$i];
 
       // Skip if an anchor tag
-      if (strpos($href, '#') === 0) {
-        print "Skipping anchor link: $href \n\n";
+      if (strpos($linkArray[$i], '#') === 0) {
+        print "Skipping anchor link: $linkArray[$i] \n\n";
         continue;
       }
 
       // Skip remote links
-      if (strpos($href, 'http') === 0) {
-        print "Skipping remote link: $href  \n\n";
+      if (strpos($linkArray[$i], 'http') === 0) {
+        print "Skipping remote link: $linkArray \n\n";
         continue;
       }
 
       // Skip mailto links
-      if (strpos($href, 'mailto') === 0) {
-        print "Skipping remote link: $href  \n\n";
+      if (strpos($linkArray[$i], 'mailto') === 0) {
+        print "Skipping remote link: $linkArray[$i]  \n\n";
         continue;
       }
 
-      print "\n Checking Link: " . $href . "\n";
+      print "\n Checking Link: " .$linkArray[$i]. "\n";
 
-      // Mimics Drupal\DrupalExtension\Context\MinkContext::assertAtPath
-      $this->getSession()->visit($this->locatePath($href));
+      //Mimics Drupal\DrupalExtension\Context\MinkContext::assertAtPath
+      $this->getSession()->visit($this->locatePath($linkArray[$i]));
 
       try {
         $this->getSession()->getStatusCode();
         $this->assertSession()->statusCodeEquals('200');
-
         print "200 Success \n";
       } catch (UnsupportedDriverActionException $e) {
         // Simply continue on, as this driver doesn't support HTTP response codes.
@@ -199,7 +163,7 @@ class FeatureContext extends RawDrupalContext
         throw new \Exception($e->getMessage());
       }
       print "\n";
-    }
+   }
     print "Done! Checked $count Links";
   }
 
@@ -292,19 +256,37 @@ class FeatureContext extends RawDrupalContext
     return str_replace('\\"', '"', $argument);
   }
 
+
   /**
-   * Click an element by css value.
-   *
-   * @When /^I click an element having css "([^"]*)"$/
+   * @Then I( should) see :text in the :tag element in the :region( region)
    */
-  public function iClickAnElementHavingCss($css_value)
+  public function assertRegionElementText($text, $tag, $region)
   {
     $page = $this->getSession()->getPage();
-    $element = $page->find('css', $css_value);
-    if ($element) {
-      $element->click();
+    $paginationElements = $page->findAll('css', ".pager__item:not(.is-active)");
+    $regionObj = $this->getRegion($region);
+    $results = $regionObj->findAll('css', $tag);
+    if (empty($paginationElements)) {
+      if (!empty($results)) {
+        foreach ($results as $result) {
+          if (stripos($result->getText(), $text) == false) {
+            throw new \Exception(sprintf('The text "%s" was not found in the "%s" text in the "%s" region on the page %s', $text, $result->getText(), $region, $this->getSession()->getCurrentUrl()));
+          }
+        }
+      }
     } else {
-      throw new \Exception('Element not found');
+      foreach ($paginationElements as $paginationElement) {
+        if (!empty($results)) {
+          foreach ($results as $result) {
+            if (stripos($result->getText(), $text) == false) {
+              throw new \Exception(sprintf('The text "%s" was not found in the "%s" text in the "%s" region on the page %s', $text, $result->getText(), $region, $this->getSession()->getCurrentUrl()));
+            }
+          }
+        }
+        if ($paginationElement) {
+          $paginationElement->click();
+        }
+      }
     }
   }
 
@@ -318,7 +300,7 @@ class FeatureContext extends RawDrupalContext
     if ($element) {
       $element->click();
     } else {
-      throw new \Exception('Element not found');
+      throw new \Exception($xpath . " not found");
     }
   }
 
@@ -326,11 +308,11 @@ class FeatureContext extends RawDrupalContext
    * @Then /^(?:|I )click (?:on |)(?:|the )"([^"]*)"(?:|.*)$/
    */
   public
-  function iClickOn($arg1)
+  function iClickAnElementHavingCss($arg1)
   {
     $findName = $this->getSession()->getPage()->find("css", $arg1);
     if (!$findName) {
-      throw new \Exception($arg1 . " could not be found");
+      throw new \Exception($arg1 . " not found");
     } else {
       $findName->click();
     }
@@ -367,7 +349,7 @@ class FeatureContext extends RawDrupalContext
             {
                 return document.querySelector("$css").validationMessage
             })()
-JS;
+    JS;
     try {
       if ($this->getSession()->evaluateScript($function) === '$text') {
         throw new \Exception("validationMessage did not match");

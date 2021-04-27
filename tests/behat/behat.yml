@@ -26,6 +26,7 @@ default:
         header_first: '.region-pre-header'
         header_second: '.region-header'
         footer_first: '.region-footer'
+        search_content: '.region.region-content'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
       filename: report.xml
       outputDir: "%paths.base%/build/tests"
