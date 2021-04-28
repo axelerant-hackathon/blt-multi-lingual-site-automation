@@ -9,7 +9,7 @@
 
 # About Automated Tests
 
-* Testing Frameworks:
+* **Testing Frameworks:**
   * [behat](https://docs.behat.org/en/latest/) - For both front-end & back-end functional tests
   * [cypress.io](https://www.cypress.io/)  - For front-end visual tests & functional tests with enabling [JSON:API module](https://www.drupal.org/project/jsonapi)
 
@@ -18,7 +18,7 @@
 * Base url of the site: https://qa-hackathon.lndo.site/
 
 
-* Testing features belongs to behat are tagged with the following primary tags:
+* Testing features belongs to **behat** are tagged with the following primary tags:
     * @contact_us_form => Covers contact us form submission with positive and negative cases
     * @create-article => Covers create and verify the article through UI
     * @header_footer => Covers header and footer elements in several pages
@@ -29,13 +29,7 @@
 * Validate the features in both "English" & "Spanish" Sites
 
 
-* Testing features belongs to cypress are tagged with the following primary tags:
-    * @contact_us_form => Covers contact us form submission with positive and negative cases
-    * @create-article => Covers create and verify the article through UI
-    * @header_footer => Covers header and footer elements in several pages
-    * @basic_search => Covers basic search scenarios in detail
-
-## Commands for behat - test execution
+### Commands for behat - test execution
 
 * Test execution using tags:
 
@@ -55,18 +49,18 @@
 ```
   * Note: Please refer this [BLT-Automated Testing documentation](https://docs.acquia.com/blt/developer/testing/) for various useful commands and test directory structure in detail.
 
-## Configure the front-end dependencies, tests in BLT
+### Configure the front-end dependencies, tests in BLT
 
   *  Please refer this [BLT-front-end documentation](https://docs.acquia.com/blt/developer/frontend/) for front-end related configuration in blt.yml.
 
-* Testing belongs to cypress covers the following tests
+* Testing belongs to **cypress** covers the following tests
     * article_validation_via_json_api.spec.js => Validation of articles via JSON:API'
     * vr_home_page.spec.js => Visual Validation of Home Page using [Applitools](https://applitools.com/)
       * Note: set the value of an environment variable APPLITOOLS_API_KEY based on our OS as mentioned [here](https://www.npmjs.com/package/@applitools/eyes-cypress) or update that variable's value in this file: /docroot/themes/custom/axe/.as-a.ini
 
 ![Cypress Tests Evidence](demo_evidence/article_validation_via_json_api.spec.js.gif)
 
-## Commands for front-end tests
+### Commands for front-end tests
 
 * The following command executes 'source:build:frontend-reqs' target hook from blt.yml which takes care of installing cypress related dependencies in our case
 ```
@@ -76,8 +70,3 @@
 ```
   $ blt tests:frontend
 ```
-
-
-
-
-
