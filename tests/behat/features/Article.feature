@@ -11,7 +11,7 @@ Scenario Outline: An administrator can able to publish an article
     And I should see the heading "<Heading>"
     And I fill in the "title" field with "<title>"
     And I fill in the "body" field with "<body>"
-    And I click the "#edit-submit" button
+    And I click an element having css "#edit-submit"
     And I should see "<expectedCreatedText>"
     And I should see "<title>"
     And I should see "<body>"

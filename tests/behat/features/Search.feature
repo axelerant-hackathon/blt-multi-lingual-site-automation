@@ -8,7 +8,7 @@ Feature: Basic Search
 Scenario Outline: Searching for a page with full title that exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<fullTitle>"
-   And I click the "#edit-submit" button
+   And I click an element having css "#edit-submit"
    Then I should see the heading "<fullTitle>"
 
    Examples:
@@ -20,7 +20,7 @@ Scenario Outline: Searching for a page with full title that exists
 Scenario Outline: Searching for a page with partial title that exists on multiple pages
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<partialTitle>"
-   And I click the "#edit-submit" button
+   And I click an element having css "#edit-submit"
    Then I should see "<partialTitle>" in the ".search-result__snippet" element in the "search_content" region
    Then I should see "<fullTitle>"
    Examples:
@@ -32,7 +32,7 @@ Scenario Outline: Searching for a page with partial title that exists on multipl
 Scenario Outline: Searching for a page that does NOT exists
    Given I am on "<URL>"
    When I fill in "edit-keys" with "<incorrectText>"
-   And I click the "#edit-submit" button
+   And I click an element having css "#edit-submit"
    Then I should see "<expectedWarningMessage>"
    Examples:
       | URL | incorrectText  | expectedWarningMessage  |
@@ -42,7 +42,7 @@ Scenario Outline: Searching for a page that does NOT exists
 @negative @empty_search
 Scenario Outline: Empty Search
    Given I am on "<URL>"
-   And I click the "#edit-submit" button
+   And I click an element having css "#edit-submit"
    Then I should see "<expectedWarningMessage>"
    Examples:
       | URL | expectedWarningMessage  |

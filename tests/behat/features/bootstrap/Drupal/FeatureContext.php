@@ -101,18 +101,18 @@ class FeatureContext extends RawDrupalContext
     print "\n Total Links Count: $count \n";
 
     $i = 0;
-    $linkArray=array();
+    $linkArray = array();
     foreach ($elements as $element) {
       $i++;
       if (empty($element->getParent())) {
         continue;
       }
       $href = $element->getAttribute('href');
-      print "\n Link #$i ". $href . "\n";
-      array_push($linkArray,$href);
+      print "\n Link #$i " . $href . "\n";
+      array_push($linkArray, $href);
     }
 
-    for($i=0; $i<count($linkArray); $i++){
+    for ($i = 0; $i < count($linkArray); $i++) {
       // Skip if empty
       if (empty($linkArray[$i])) {
         continue;
@@ -145,7 +145,7 @@ class FeatureContext extends RawDrupalContext
         continue;
       }
 
-      print "\n Checking Link: " .$linkArray[$i]. "\n";
+      print "\n Checking Link: " . $linkArray[$i] . "\n";
 
       //Mimics Drupal\DrupalExtension\Context\MinkContext::assertAtPath
       $this->getSession()->visit($this->locatePath($linkArray[$i]));
@@ -163,7 +163,7 @@ class FeatureContext extends RawDrupalContext
         throw new \Exception($e->getMessage());
       }
       print "\n";
-   }
+    }
     print "Done! Checked $count Links";
   }
 
@@ -242,6 +242,10 @@ class FeatureContext extends RawDrupalContext
       case "recipeInstruction":
         $selector = 'field_recipe_instruction[0][value]';
         break;
+
+      case "adminstrativeLabel":
+        $selector = 'layout_settings[label]';
+        break;
     }
     return $selector;
   }
@@ -305,7 +309,7 @@ class FeatureContext extends RawDrupalContext
   }
 
   /**
-   * @Then /^(?:|I )click (?:on |)(?:|the )"([^"]*)"(?:|.*)$/
+   * @Then /^(?:|I )click an element having css "([^"]*)"$/
    */
   public
   function iClickAnElementHavingCss($arg1)
@@ -349,7 +353,7 @@ class FeatureContext extends RawDrupalContext
             {
                 return document.querySelector("$css").validationMessage
             })()
-    JS;
+JS;
     try {
       if ($this->getSession()->evaluateScript($function) === '$text') {
         throw new \Exception("validationMessage did not match");
@@ -376,5 +380,20 @@ class FeatureContext extends RawDrupalContext
     }
     $this->getSession()
       ->executeScript("CKEDITOR.instances[\"$fieldId\"].setData(\"$value\");");
+  }
+
+  /**
+   * Asserts that a given module exists and is enabled.
+   * @Given the :module module is installed
+   */
+  public function assertModuleExists($module)
+  {
+    $moduleHandler = \Drupal::service('module_handler');
+    if ($moduleHandler->moduleExists($module)) {
+      return TRUE;
+    }
+
+    $message = sprintf('Module "%s" is not installed.', $module);
+    throw new \Exception($message);
   }
 }
