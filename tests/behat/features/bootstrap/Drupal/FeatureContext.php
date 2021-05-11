@@ -382,18 +382,36 @@ JS;
       ->executeScript("CKEDITOR.instances[\"$fieldId\"].setData(\"$value\");");
   }
 
-  /**
+   /**
    * Asserts that a given module exists and is enabled.
    * @Given the :module module is installed
    */
   public function assertModuleExists($module)
   {
     $moduleHandler = \Drupal::service('module_handler');
-    if ($moduleHandler->moduleExists($module)) {
+    if ($moduleHandler->moduleExists($module)){
       return TRUE;
     }
 
     $message = sprintf('Module "%s" is not installed.', $module);
     throw new \Exception($message);
   }
+
+  /**
+   * @When /^I hover over the element "([^"]*)"$/
+   */
+  public function iHoverOverTheElement($locator)
+  {
+    $session = $this->getSession(); // get the mink session
+    $element = $session->getPage()->find('css', $locator); // runs the actual query and returns the element
+
+    // errors must not pass silently
+    if (null === $element) {
+      throw new \InvalidArgumentException(sprintf('Could not evaluate CSS selector: "%s"', $locator));
+    }
+
+    // ok, let's hover it
+    $element->mouseOver();
+  }
+
 }

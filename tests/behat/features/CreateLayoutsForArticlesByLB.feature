@@ -1,7 +1,7 @@
-@javascript @layout_builder
+@javascript @create_layout_articles
 Feature: Create a flexible layout for a article content type
     In order to utilize the benefits of layout builder
-    As an administrator of the site
+    As a user (adminstrator/content editor/site builder) of the site
     I should able to create a flexible layout for a article content type
 
     Background:
@@ -42,9 +42,10 @@ Feature: Create a flexible layout for a article content type
         And the "Show content preview" checkbox is checked
         And I should see the heading "Newsletter CTA"
         And I press "Save layout"
+        And I press "Save"
 
     @smoke @api @positive @existing-articles
-    Scenario: Verify the created layouts for articles are reflected in any of the existing articles
+    Scenario: Verify the created layouts for articles should be reflected in any of the existing articles
         When I go to "/es/articles/un-aplauso-para-las-zanahorias"
         And I should see "Artículo" in the ".block-field-blocknodearticletype .field__item" element
         And I should see "Newsletter CTA"
@@ -52,14 +53,22 @@ Feature: Create a flexible layout for a article content type
         And I should see "Article" in the ".block-field-blocknodearticletype .field__item" element
         And I should see "Newsletter CTA"
         Then I am on "/en/admin/structure/types/manage/article/display/full"
+        And I click an element having css "#edit-manage-layout"
+        And I wait for the page to load
+        And I follow "Remove Content prefix"
+        And I wait for AJAX to finish
+        And I press "Remove"
+        And I press "Save layout"
+        And I wait for the page to load
+        And I should see a "#edit-manage-layout" element
         And I uncheck the box "Use Layout Builder"
         And I press "Save"
         And I should see the message "Your settings have been saved."
         And I press "Confirm"
         And I should see the message "Layout Builder has been disabled."
 
-    @smoke @api @negative @existing-other-content-types
-    Scenario: Verify the created layouts for articles should not be reflected in existing recipes & basic pages
+    @api @negative @existing-other-content-types
+    Scenario: Verify the created layouts for articles should not be reflected in other content types(like recipes & basic pages)
         When I go to "/es/about-umami"
         But I should not see a ".block-field-blocknodearticletype .field__item" element
         But I should not see "Newsletter CTA"
@@ -73,6 +82,14 @@ Feature: Create a flexible layout for a article content type
         But I should not see a ".block-field-blocknodearticletype .field__item" element
         But I should not see "Newsletter CTA"
         Then I am on "/en/admin/structure/types/manage/article/display/full"
+        And I click an element having css "#edit-manage-layout"
+        And I wait for the page to load
+        And I follow "Remove Content prefix"
+        And I wait for AJAX to finish
+        And I press "Remove"
+        And I press "Save layout"
+        And I wait for the page to load
+        And I should see a "#edit-manage-layout" element
         And I uncheck the box "Use Layout Builder"
         And I press "Save"
         And I should see the message "Your settings have been saved."
@@ -80,7 +97,7 @@ Feature: Create a flexible layout for a article content type
         And I should see the message "Layout Builder has been disabled."
 
     @smoke @api @positive @new-article
-    Scenario: Verify the created layouts for articles should not be reflected in newly basic page
+    Scenario: Verify the created layouts for articles should be reflected in newly created articles
         Given "article" content:
             | title       | moderation_state | body               |
             | BLT Article | published        | Testing Acquia BLT |
@@ -94,14 +111,22 @@ Feature: Create a flexible layout for a article content type
         And I should see "Artículo" in the ".block-field-blocknodearticletype .field__item" element
         And I should see "Newsletter CTA"
         Then I am on "/en/admin/structure/types/manage/article/display/full"
+        And I click an element having css "#edit-manage-layout"
+        And I wait for the page to load
+        And I follow "Remove Content prefix"
+        And I wait for AJAX to finish
+        And I press "Remove"
+        And I press "Save layout"
+        And I wait for the page to load
+        And I should see a "#edit-manage-layout" element
         And I uncheck the box "Use Layout Builder"
         And I press "Save"
         And I should see the message "Your settings have been saved."
         And I press "Confirm"
         And I should see the message "Layout Builder has been disabled."
 
-    @smoke @api @negative @new-other-content-types
-    Scenario: Verify the created layouts for articles are not reflected in newly created articles
+   @api @negative @new-other-content-types
+    Scenario: Verify the created layouts for articles should not be reflected in other newly created content types (like basic pages)
         When I am viewing an page:
             | title            | node      |
             | body             | Test Page |
@@ -113,6 +138,14 @@ Feature: Create a flexible layout for a article content type
         And I should not see a ".block-field-blocknodearticletype .field__item" element
         And I should not see "Newsletter CTA"
         Then I am on "/en/admin/structure/types/manage/article/display/full"
+        And I click an element having css "#edit-manage-layout"
+        And I wait for the page to load
+        And I follow "Remove Content prefix"
+        And I wait for AJAX to finish
+        And I press "Remove"
+        And I press "Save layout"
+        And I wait for the page to load
+        And I should see a "#edit-manage-layout" element
         And I uncheck the box "Use Layout Builder"
         And I press "Save"
         And I should see the message "Your settings have been saved."
