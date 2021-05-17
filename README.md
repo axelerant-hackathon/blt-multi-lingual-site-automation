@@ -23,6 +23,8 @@
     * @create-article => Covers create and verify the article through UI
     * @header_footer => Covers header and footer elements in several pages
     * @basic_search => Covers basic search scenarios in detail
+    * @create_layout_articles=> Covers Create Layouts for article content pages in detail
+    * @change_layout_individual_article=> Change Layout for specific article content page in detail
 
 
 
