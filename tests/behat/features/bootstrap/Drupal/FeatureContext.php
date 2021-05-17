@@ -270,6 +270,7 @@ class FeatureContext extends RawDrupalContext
     $paginationElements = $page->findAll('css', ".pager__item:not(.is-active)");
     $regionObj = $this->getRegion($region);
     $results = $regionObj->findAll('css', $tag);
+    //The search results are resides on the same page and doesn't have pagination
     if (empty($paginationElements)) {
       if (!empty($results)) {
         foreach ($results as $result) {
@@ -279,6 +280,7 @@ class FeatureContext extends RawDrupalContext
         }
       }
     } else {
+      //The search results are resides on more than one page and have pagination
       foreach ($paginationElements as $paginationElement) {
         if (!empty($results)) {
           foreach ($results as $result) {
@@ -293,7 +295,6 @@ class FeatureContext extends RawDrupalContext
       }
     }
   }
-
   /**
    * @Given /^I click an element having xpath "([^"]*)"$/
    */
@@ -332,7 +333,7 @@ class FeatureContext extends RawDrupalContext
        var elem = document.getElementById("$elementId");
        elem.scrollIntoView(false);
        })()
-       JS;
+JS;
     try {
       $this->getSession()->executeScript($function);
     } catch (\Exception $e) {
@@ -345,7 +346,7 @@ class FeatureContext extends RawDrupalContext
    * Compare the validationMessage of given element.
    * @Then /^the "([^"]*)" validationMessage should be "([^"]*)"$/
    */
-  public function theValidatonMessageShouldBe($css, $text)
+  public function theValidationMessageShouldBe($css, $expected)
   {
     $function = <<<JS
         (
@@ -354,12 +355,9 @@ class FeatureContext extends RawDrupalContext
                 return document.querySelector("$css").validationMessage
             })()
 JS;
-    try {
-      if ($this->getSession()->evaluateScript($function) === '$text') {
-        throw new \Exception("validationMessage did not match");
-      };
-    } catch (\Exception $e) {
-      throw new \Exception("Scroll Into View Failed. Check Your Script");
+    $actual = $this->getSession()->evaluateScript($function);
+    if ($actual !== $expected) {
+      throw new \Exception(sprintf("Expected validationMessage attribute value '%s' doesn't match with actual value '%s'", $expected, $actual));
     }
   }
 
@@ -382,14 +380,14 @@ JS;
       ->executeScript("CKEDITOR.instances[\"$fieldId\"].setData(\"$value\");");
   }
 
-   /**
+  /**
    * Asserts that a given module exists and is enabled.
    * @Given the :module module is installed
    */
   public function assertModuleExists($module)
   {
     $moduleHandler = \Drupal::service('module_handler');
-    if ($moduleHandler->moduleExists($module)){
+    if ($moduleHandler->moduleExists($module)) {
       return TRUE;
     }
 
@@ -413,5 +411,4 @@ JS;
     // ok, let's hover it
     $element->mouseOver();
   }
-
 }

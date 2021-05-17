@@ -1,5 +1,7 @@
 import '@applitools/eyes-cypress/commands'
+import 'cypress-axe'
 import './commands'
+require('cypress-grep')()
 
 if (Cypress.env('APPLITOOLS_SETUP')) {
   beforeEach(() => {
@@ -15,7 +17,8 @@ if (Cypress.env('APPLITOOLS_SETUP')) {
         { deviceName: 'iPad' },
         { deviceName: 'Pixel 2' },
       ],
-      concurrency: 1,
+      concurrency: 50,
+      accessibilityValidation:{level: 'AA', guidelinesVersion: 'WCAG_2_0'}
     });
   });
 

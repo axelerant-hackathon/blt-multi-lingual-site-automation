@@ -1,4 +1,4 @@
-# Implementing Automated Tests in Acquia BLT - Umami Profile(Bilingual Site)
+# Implementing Full-Stack Automated Tests(Functional,Visual,Accesssibility,Security) in Acquia BLT - Bilingual Site
 
 ![Behat Execution Resutls](demo_evidence/behat_test_results.png)
 
@@ -38,6 +38,8 @@
   $ lando blt tests:behat:run -D behat.tags=@create-article
   $ lando blt tests:behat:run -D behat.tags=@header_footer
   $ lando blt tests:behat:run -D behat.tags=@basic_search
+  $ lando blt tests:behat:run -D behat.tags=@create_layout_articles
+  $ lando blt tests:behat:run -D behat.tags=@change_layout_individual_article
 ```
 * Test execution using feature file name:
 
@@ -46,6 +48,8 @@
   $ lando blt tests:behat:run -D behat.paths=Contact.feature
   $ lando blt tests:behat:run -D behat.paths=HeaderAndFooter.feature
   $ lando blt tests:behat:run -D behat.paths=Search.feature
+  $ lando blt tests:behat:run -D behat.paths=CreateLayoutsForArticlesByLB.feature
+  $ lando blt tests:behat:run -D behat.paths=ModifyLayoutsForSpecificArticleByLB.feature
 ```
   * Note: Please refer this [BLT-Automated Testing documentation](https://docs.acquia.com/blt/developer/testing/) for various useful commands and test directory structure in detail.
 
@@ -56,11 +60,13 @@
 * Testing belongs to **cypress** covers the following tests
     * article_validation_via_json_api.spec.js => Validation of articles via JSON:API'
     * vr_home_page.spec.js => Visual Validation of Home Page using [Applitools](https://applitools.com/)
+    * accessibility.spec.js => Accessibility Tests in Home Page using [cypress-axe](https://www.npmjs.com/package/cypress-axe) as well as [Applitools Contrast Advisor](https://applitools.com/docs/features/contrast-accessibility.html)
+    ![Accessibility Test Evidence](demo_evidence/axe_test_results.png)
       * Note: set the value of an environment variable APPLITOOLS_API_KEY based on our OS as mentioned [here](https://www.npmjs.com/package/@applitools/eyes-cypress) or update that variable's value in this file: /docroot/themes/custom/axe/.as-a.ini
 
 ![Cypress Tests Evidence](demo_evidence/article_validation_via_json_api.spec.js.gif)
 
-### Commands for front-end tests
+### Commands for front-end tests including accessibility, security
 
 * The following command executes 'source:build:frontend-reqs' target hook from blt.yml which takes care of installing cypress related dependencies in our case
 ```

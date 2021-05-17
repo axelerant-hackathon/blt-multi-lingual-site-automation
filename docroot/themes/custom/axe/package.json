@@ -4,18 +4,20 @@
   "description": "Exploring the AI Driven Applitools Visual Regression Testing in Drupal Site",
   "main": "index.js",
   "scripts": {
-    "visual": "as-a applitools npx cypress run --env grep=Visual --headless --browser chrome >file.log",
-    "json:api": "as-a applitools npx cypress run --env grep=JSON:API --headless --browser chrome >file.log",
-    "test": "as-a applitools npx cypress run --headless --browser chrome >file.log",
+    "visual": "as-a applitools npx cypress run --env grepTags=@Visual --headless --browser chrome",
+    "json:api": "as-a applitools npx cypress run --env grepTags=@JSON:API --headless --browser chrome",
+    "test": "as-a applitools npx cypress run --headless --browser chrome",
     "cypress:open": "cypress open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@applitools/eyes-cypress": "^3.21.0",
+    "@applitools/eyes-cypress": "^3.21.1",
     "as-a": "^1.3.1",
-    "cypress": "^7.1.0",
-    "cypress-select-tests": "^1.7.0"
+    "axe-core": "^4.2.0",
+    "cypress": "^7.3.0",
+    "cypress-axe": "^0.12.2",
+    "cypress-grep": "^2.3.0"
   }
 }
