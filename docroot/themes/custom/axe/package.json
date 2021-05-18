@@ -6,6 +6,9 @@
   "scripts": {
     "visual": "as-a applitools npx cypress run --env grepTags=@Visual --headless --browser chrome",
     "json:api": "as-a applitools npx cypress run --env grepTags=@JSON:API --headless --browser chrome",
+    "security": "as-a applitools npx cypress run --env grepTags=@Security --headless --browser chrome",
+    "axe": "as-a applitools npx cypress run --env grepTags=@Axe --headless --browser chrome",
+    "performance": "as-a applitools npx cypress run --env grepTags=@Performance --headless --browser chrome",
     "test": "as-a applitools npx cypress run --headless --browser chrome",
     "cypress:open": "cypress open"
   },
@@ -14,9 +17,11 @@
   "license": "ISC",
   "devDependencies": {
     "@applitools/eyes-cypress": "^3.21.1",
+    "@neuralegion/cypress-har-generator": "^5.2.2",
     "as-a": "^1.3.1",
     "axe-core": "^4.2.0",
     "cypress": "^7.3.0",
+    "cypress-audit": "^0.3.0",
     "cypress-axe": "^0.12.2",
     "cypress-grep": "^2.3.0"
   }

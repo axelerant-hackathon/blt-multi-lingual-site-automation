@@ -1,4 +1,4 @@
-const pages = require("../fixtures/accessibility_testdata.json");
+const pages = require("../fixtures/urls_testdata.json");
 
 // Define at the top of the spec file or just import it
 function terminalLog(violations) {
@@ -22,7 +22,7 @@ function terminalLog(violations) {
 
 describe("Accessibility test", () => {
   pages.forEach((page) => {
-    it(`Basic accessibility test in ${page.title} `, () => {
+    it(`Basic accessibility test in ${page.title} `, { tags: "@Axe" }, () => {
       cy.visit(page);
       cy.injectAxe();
       cy.checkA11y(null, null, terminalLog);
@@ -30,26 +30,32 @@ describe("Accessibility test", () => {
   });
 
   pages.forEach((page) => {
-    it(`Accessibility test should only include rules with serious and critical impacts in ${page.title} `, () => {
-      cy.visit(page);
-      cy.injectAxe();
-      cy.checkA11y(
-        null,
-        { includedImpacts: ["critical", "serious"] },
-        terminalLog
-      );
-    });
+    it(
+      `Accessibility test should only include rules with serious and critical impacts in ${page.title} `,
+      { tags: "@Axe" },
+      () => {
+        cy.visit(page);
+        cy.injectAxe();
+        cy.checkA11y(
+          null,
+          { includedImpacts: ["critical", "serious"] },
+          terminalLog
+        );
+      }
+    );
   });
 
-
-    it(`Should show contrast issues on Applitools dashboard for Home Page English Site`,{ tags: '@Visual' }, () => {
-      cy.visit('/');
+  it(
+    `Should show contrast issues on Applitools dashboard for Home Page English Site`,
+    { tags: "@Visual" },
+    () => {
+      cy.visit("/");
       cy.get(".block-inner").should("be.visible");
       cy.eyesCheckWindow({
         tag: `Accessibility Visual Test`,
         target: "window",
         fully: true,
       });
-    });
+    }
+  );
 });
-
